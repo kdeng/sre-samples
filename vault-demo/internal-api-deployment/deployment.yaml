@@ -1,0 +1,34 @@
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: api
+    # vault-sidecar-injector: enabled
+  name: api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: api
+      annotations:
+        vault.hashicorp.com/agent-inject: 'true'
+        vault.hashicorp.com/role: 'internal-app'
+        vault.hashicorp.com/agent-inject-secret-config: 'external/database/config'
+        # # Environment variable export template
+        vault.hashicorp.com/agent-inject-template-config: |-
+          {{ with secret "external/database/config" }}
+          DB_USERNAME="{{ .Data.data.username }}"
+          DB_PASSWORD="{{ .Data.data.password }}"
+          {{ end }}
+    spec:
+      serviceAccountName: app
+      containers:
+      - image: docker.io/kdeng/app-demo:java-v3
+        name: api-demo

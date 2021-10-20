@@ -1,7 +1,7 @@
 variable "project_name" {
   description   = "The name of current infrastructure"
   type          = string
-  default       = "recruitable-QA"
+  default       = "kefeng-QA"
 }
 
 variable "project_region" {
@@ -19,7 +19,7 @@ variable "project_cidr" {
 # variable "cluster_name" {
 #   description   = "The cluster name of jenkins cluster"
 #   type          = string
-#   default       = "recruitable-eks-cluster-QA"
+#   default       = "kefeng-eks-cluster-QA"
 # }
 
 variable "environment" {
