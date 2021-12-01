@@ -1,0 +1,48 @@
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: build-robot-rolebinding
+  namespace: my-namespace
+subjects:
+- kind: ServiceAccount
+  name: build-robot
+  namespace: default
+roleRef:
+  kind: ClusterRole
+  name: cluster-admin
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: gpu-service-up-cronjob
+spec:
+  schedule: "5 1 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: build-robot
+          containers:
+            - name: gpu-job-up-container
+              image: bitnami/kubectl:latest
+              args: ["scale", "deployment/api-demo-v3", "--replicas=2"]
+          restartPolicy: OnFailure
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: gpu-service-down-cronjob
+spec:
+  schedule: "10 1 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: build-robot
+          containers:
+            - name: gpu-job-down-container
+              image: bitnami/kubectl:latest
+              args: ["scale", "deployment/api-demo-v3", "--replicas=0"]
+          restartPolicy: OnFailure

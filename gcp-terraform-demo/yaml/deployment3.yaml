@@ -1,0 +1,25 @@
+###
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx2
+  labels:
+    env: test
+spec:
+  # affinity:
+  #   nodeAffinity:
+  #     requiredDuringSchedulingIgnoredDuringExecution:
+  #       nodeSelectorTerms:
+  #       - matchExpressions:
+  #         - key: test-node-affinity
+  #           operator: In
+  #           values:
+  #           - test
+  containers:
+  - name: nginx2
+    image: nginx
+    imagePullPolicy: IfNotPresent
+  tolerations:
+    - key: "key"
+      operator: "Exists"
+      effect: "NoSchedule"
