@@ -1,0 +1,123 @@
+---
+apiVersion: v1
+kind: List
+items:
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    labels:
+      app: api-demo-v2
+    name: api-demo-v2
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 2
+    selector:
+      matchLabels:
+        app: api-demo-service-v2
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        labels:
+          app: api-demo-service-v2
+      spec:
+        containers:
+        - image: gcr.io/kefeng-playground-369510/api-demo:node-v2
+          imagePullPolicy: Always
+          name: api-demo-v2
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+          resources:
+            limits:
+              cpu: 200m
+              memory: 128Mi
+            requests:
+              cpu: 100m
+              memory: 64Mi
+          startupProbe:
+            httpGet:
+              path: /healthz/startupProbe
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 60
+            successThreshold: 1
+            failureThreshold: 5
+            timeoutSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /healthz/livenessProbe
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 60
+            successThreshold: 1
+            failureThreshold: 5
+            timeoutSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /healthz/readinessProbe
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 60
+            successThreshold: 1
+            failureThreshold: 5
+            timeoutSeconds: 5
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        restartPolicy: Always
+        terminationGracePeriodSeconds: 30
+- apiVersion: cloud.google.com/v1
+  kind: BackendConfig
+  metadata:
+    name: api-demo-v2-backend
+  spec:
+    securityPolicy:
+      name: "gce-policy"  
+    healthCheck:
+      checkIntervalSec: 30
+      port: 8080
+      requestPath: /manifest.json
+      timeoutSec: 25
+      type: HTTP
+    timeoutSec: 25
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      cloud.google.com/app-protocols: '{"my-http":"HTTP"}'
+      cloud.google.com/backend-config: '{"default":"api-demo-v2-backend"}'
+      cloud.google.com/neg: '{"ingress":true}'
+    name: api-demo-v2-service
+  spec:
+    ports:
+    - name: my-http
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      app: api-demo-service-v2
+    sessionAffinity: None
+    type: ClusterIP
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    annotations:
+      kubernetes.io/ingress.class: "gce"
+      # kubernetes.io/ingress.global-static-ip-name: "web-static-ip"
+      # kubernetes.io/ingress.class: gce-internal
+    name: gce-ingress-demo
+  spec:
+    rules:
+    - http:
+        paths:
+        - backend:
+            service:
+              name: api-demo-v2-service
+              port:
+                name: my-http
+          path: /v2/*
+          pathType: ImplementationSpecific

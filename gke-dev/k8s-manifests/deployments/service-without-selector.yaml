@@ -1,0 +1,20 @@
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: api-demo-v1-remote-service
+subsets:
+  - addresses:
+      - ip: 10.152.0.32
+    ports:
+      - port: 30018
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: api-demo-v1-remote-service
+spec:
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 30018

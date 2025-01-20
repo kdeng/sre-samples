@@ -1,0 +1,16 @@
+runtime: java
+env: flex
+service: flex-java-demo
+
+runtime_config:  # Optional
+  jdk: openjdk8
+
+env_variables:
+   QUEUE_NAME: 'kefeng-queue'
+
+handlers:
+- url: /.*
+  script: this field is required, but ignored
+
+manual_scaling:
+  instances: 1

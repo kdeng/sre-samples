@@ -1,0 +1,79 @@
+apiVersion: v1
+kind: List
+items:
+- apiVersion: cloud.google.com/v1
+  kind: BackendConfig
+  metadata:
+    name: api-demo-v2-backend-test-nodeport
+  spec:
+    securityPolicy:
+      name: gce-policy
+    # iap:
+    #   enabled: false
+    #   oauthclientCredentials:
+    #     secretName: my-secret
+    timeoutSec: 5  # A timeout of seconds
+    # connectionDraining:
+    #   drainingTimeoutSec: 60 # A connection draining timeout of 60 seconds.
+    # sessionAffinity:
+    #   affinityType: "CLIENT_IP"
+    healthCheck:
+      checkIntervalSec: 30
+      port: 8080
+      requestPath: /v2/nodeport-manifest.json
+      timeoutSec: 25
+      healthyThreshold: 3
+      unhealthyThreshold: 5
+      type: HTTP
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      cloud.google.com/app-protocols: '{"my-port":"HTTP"}'
+      cloud.google.com/backend-config: '{"default":"api-demo-v2-backend-test-nodeport"}'
+      cloud.google.com/neg: '{"ingress":true}'
+    name: api-demo-v2-service-test-nodeport
+  spec:
+    type: ExternalName
+    externalName: api-demo-v2-service-nodeport.test.svc.cluster.local
+    ports:
+    - name: my-port
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+# - apiVersion: v1
+#   kind: Service
+#   metadata:
+#     name: api-demo-v3-service-prod
+#   spec:
+#     type: ExternalName
+#     externalName: api-demo-v3-service.prod
+#     ports:
+#     - name: my-http
+#       port: 8080
+#       protocol: TCP
+#       targetPort: 8080
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    name: gce-ingress-demo-nodeport
+    annotations:
+      kubernetes.io/ingress.class: "gce"
+  spec:
+    rules:
+    - http:
+        paths:
+        - backend:
+            service:
+              name: api-demo-v2-service-test-nodeport
+              port:
+                name: my-port
+          path: /v2/*
+          pathType: ImplementationSpecific
+        # - backend:
+        #     service:
+        #       name: api-demo-v3-service-prod
+        #       port:
+        #         name: my-http
+        #   path: /*
+        #   pathType: ImplementationSpecific

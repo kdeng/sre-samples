@@ -1,0 +1,22 @@
+runtime: python27
+api_version: 1
+threadsafe: true
+instance_class: F1
+service: kdeng-gae-bigquery-service
+
+env_variables:
+  GAE_USE_SOCKETS_HTTPLIB : 'true'
+  TASK_QUEUE_NAME: "kdeng-bigquery-job-queue"
+
+libraries:
+- name: ssl
+  version: latest
+
+handlers:
+- url: /task/ingestion/.*
+  script: handle_ingestion_job.app
+  login: admin
+
+- url: /.*
+  script: handle_all.app
+  login: admin

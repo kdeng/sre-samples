@@ -1,0 +1,5 @@
+cron:
+#    - description: "test dispatch vs target"
+#      url: /task/hello/aimar
+#      schedule: every 1 mins
+#      target: flex-java-demo

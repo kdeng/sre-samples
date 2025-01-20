@@ -1,0 +1,38 @@
+---
+apiVersion: v1
+kind: List
+items:
+- apiVersion: networking.gke.io/v1
+  kind: MultiClusterService
+  metadata:
+    name: api-mcs
+    namespace: api
+  spec:
+    template:
+      spec:
+        selector:
+          app: api-demo-service
+        ports:
+        - name: http
+          protocol: TCP
+          port: 8080
+          targetPort: 8080
+# - apiVersion: v1
+#   kind: Service
+#   metadata:
+#     annotations:
+#       cloud.google.com/app-protocols: '{"my-http":"HTTP"}'
+#       cloud.google.com/backend-config: '{"default":"api-demo-v3-backend"}'
+#       cloud.google.com/neg: '{"ingress":true}'
+#     name: api-demo-v3-service
+#   spec:
+#     ports:
+#     - name: my-http
+#       port: 8080
+#       protocol: TCP
+#       targetPort: 8080
+#     selector:
+#       app: api-demo-service-v3
+#     sessionAffinity: None
+#     type: ClusterIP
+

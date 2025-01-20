@@ -1,0 +1,6 @@
+# export.yaml
+kind: ServiceExport
+apiVersion: net.gke.io/v1
+metadata:
+ namespace: api
+ name: api-demo-v3-service

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appengine-web-app xmlns="http://appengine.google.com/ns/1.0">
+    <service>kdeng-java-jsp-demo</service>
+    <threadsafe>true</threadsafe>
+    <runtime>java8</runtime>
+    <system-properties>
+        <property name="java.util.logging.config.file" value="WEB-INF/logging.properties"/>
+    </system-properties>
+    <precompilation-enabled>false</precompilation-enabled>
+    <sessions-enabled>true</sessions-enabled>
+    <env-variables>
+        <env-var name="DEFAULT_ENCODING" value="UTF-8" />
+        <env-var name="APPLICATION_ID" value="This is application ID from environment variable" />
+    </env-variables>
+    <public-root>/static</public-root>
+    <!--<system-properties>-->
+        <!--<property name="app.system.property" value="This is system property value" />-->
+    <!--</system-properties>-->
+    <resource-files>
+        <include path="/css/*.css" />
+        <exclude path="/vendor/*.css" />
+    </resource-files>
+</appengine-web-app>

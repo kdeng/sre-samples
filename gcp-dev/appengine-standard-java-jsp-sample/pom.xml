@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>nz.net.osnz</groupId>
+    <artifactId>appengine-standard-java-jsp-sample</artifactId>
+    <version>1.1-SNAPSHOT</version>
+    <packaging>war</packaging>
+
+    <name>appengine-standard-java-jsp-sample</name>
+    <description>appengine-standard-java-jsp-sample</description>
+    <url>https://github.com/kdeng/appengine-standard-java-jsp-sample</url>
+
+    <properties>
+        <gcp.service.version>5</gcp.service.version>
+        <java.version>1.8</java.version>
+        <appengine-maven-plugin.version>2.0.0-rc1</appengine-maven-plugin.version>
+        <jetty-maven-plugin.version>9.4.11.v20180605</jetty-maven-plugin.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.google.appengine</groupId>
+            <artifactId>appengine-tools-sdk</artifactId>
+            <version>1.9.64</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.appengine</groupId>
+            <artifactId>appengine-local-runtime-shared</artifactId>
+            <version>1.9.64</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.appengine</groupId>
+            <artifactId>appengine-local-runtime</artifactId>
+            <version>1.9.64</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.appengine</groupId>
+            <artifactId>appengine-api-stubs</artifactId>
+            <version>1.9.64</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.appengine</groupId>
+            <artifactId>appengine-api-1.0-sdk</artifactId>
+            <version>1.9.64</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.1.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>nz.net.osnz.composite</groupId>
+            <artifactId>composite-jetty</artifactId>
+            <version>[3.7]</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>nz.net.osnz.composite</groupId>
+            <artifactId>composite-unit-test</artifactId>
+            <version>[5.6]</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <!-- For hot reload of the web application when using an IDE Eclipse / IDEA -->
+        <outputDirectory>${project.build.directory}/${project.build.finalName}/WEB-INF/classes</outputDirectory>
+        <plugins>
+
+            <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>appengine-maven-plugin</artifactId>
+                <version>${appengine-maven-plugin.version}</version>
+                <configuration>
+                    <deploy.project>kdeng-gae-demos</deploy.project>
+                    <deploy.version>${gcp.service.version}</deploy.version>
+                    <deploy.stopPreviousVersion>true</deploy.stopPreviousVersion>
+                    <deploy.promote>true</deploy.promote>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-maven-plugin</artifactId>
+                <version>${jetty-maven-plugin.version}</version>
+            </plugin>
+        </plugins>
+
+    </build>
+
+</project>

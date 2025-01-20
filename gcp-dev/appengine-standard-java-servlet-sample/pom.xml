@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>nz.net.osnz</groupId>
+    <artifactId>appengine-standard-java-servlet-sample</artifactId>
+    <version>1.1-SNAPSHOT</version>
+    <packaging>war</packaging>
+
+    <name>appengine-standard-java-servlet-sample</name>
+    <description>appengine-standard-java-servlet-sample</description>
+    <url>https://github.com/kdeng/appengine-standard-java-servlet-sample</url>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <java.version>1.8</java.version>
+
+        <gcp.service.version>1</gcp.service.version>
+
+        <appengine-maven-plugin.version>2.0.0-rc1</appengine-maven-plugin.version>
+        <jetty-maven-plugin.version>9.4.11.v20180605</jetty-maven-plugin.version>
+
+        <jetty-maven-plugin.version>9.4.11.v20180605</jetty-maven-plugin.version>
+        <maven-surefire-plugin.version>2.21.0</maven-surefire-plugin.version>
+        <maven-failsafe-plugin.version>2.21.0</maven-failsafe-plugin.version>
+        <maven-compiler-plugin.version>3.7.0</maven-compiler-plugin.version>
+        <compile.plugin.debug>false</compile.plugin.debug>
+        <compile.plugin.optimize>true</compile.plugin.optimize>
+
+        <skip.integration.tests>false</skip.integration.tests>
+
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.google.appengine</groupId>
+            <artifactId>appengine-tools-sdk</artifactId>
+            <version>1.9.64</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.appengine</groupId>
+            <artifactId>appengine-local-runtime-shared</artifactId>
+            <version>1.9.64</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.appengine</groupId>
+            <artifactId>appengine-local-runtime</artifactId>
+            <version>1.9.64</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.appengine</groupId>
+            <artifactId>appengine-api-stubs</artifactId>
+            <version>1.9.64</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.appengine</groupId>
+            <artifactId>appengine-api-1.0-sdk</artifactId>
+            <version>1.9.64</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.1.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>nz.net.osnz.composite</groupId>
+            <artifactId>composite-jetty</artifactId>
+            <version>[3.7]</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>nz.net.osnz.composite</groupId>
+            <artifactId>composite-unit-test</artifactId>
+            <version>[5.6]</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.cloud</groupId>
+            <artifactId>google-cloud-bigquery</artifactId>
+            <version>[1.35.0]</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.cloud</groupId>
+            <artifactId>google-cloud-storage</artifactId>
+            <version>[1.35.0]</version>
+        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>nz.net.osnz.common</groupId>-->
+            <!--<artifactId>common-jackson</artifactId>-->
+            <!--<version>[2.1]</version>-->
+        <!--</dependency>-->
+        <dependency>
+            <groupId>nz.net.osnz.composite</groupId>
+            <artifactId>composite-logging</artifactId>
+            <version>[4.4]</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <!-- For hot reload of the web application when using an IDE Eclipse / IDEA -->
+        <outputDirectory>${project.build.directory}/${project.build.finalName}/WEB-INF/classes</outputDirectory>
+        <plugins>
+
+            <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>appengine-maven-plugin</artifactId>
+                <version>${appengine-maven-plugin.version}</version>
+                <configuration>
+                    <deploy.project>kdeng-gae-demos</deploy.project>
+                    <deploy.version>${gcp.service.version}</deploy.version>
+                    <deploy.stopPreviousVersion>true</deploy.stopPreviousVersion>
+                    <deploy.promote>true</deploy.promote>
+                    <services>kdeng-java-servlet-demo</services>
+
+                    <devserver.host>localhost</devserver.host>
+                    <devserver.port>8888</devserver.port>
+                </configuration>
+            </plugin>
+
+
+            <plugin>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-maven-plugin</artifactId>
+                <version>${jetty-maven-plugin.version}</version>
+            </plugin>
+
+
+            <!--
+				Exclude integration and functional tests in the normal test phase.
+				Integration tests are run in a separate surefire run in the test
+				phase; functional tests are run later via the failsafe plugin.
+			  -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven-surefire-plugin.version}</version>
+                <configuration>
+                    <useSystemClassLoader>true</useSystemClassLoader>
+                    <useManifestOnlyJar>false</useManifestOnlyJar>
+                    <failIfNoTests>true</failIfNoTests>
+                    <includes>
+                        <include>**/*Test.java</include>
+                        <include>**/*Tests.java</include>
+                    </includes>
+                    <excludes>
+                        <exclude>**/*$*</exclude>
+                        <exclude>**/*IntegrationTest.java</exclude>
+                        <exclude>**/*IntegrationTests.java</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>${maven-failsafe-plugin.version}</version>
+                <configuration>
+                    <argLine>-Xms1024M -Xmx1024M</argLine>
+                    <failIfNoTests>false</failIfNoTests>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                    <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
+                    <summaryFile>${project.build.directory}/surefire-reports/failsafe-summary.xml</summaryFile>
+                    <skipTests>${skip.integration.tests}</skipTests>
+                    <excludes>
+                        <exclude>**/*$*</exclude>
+                    </excludes>
+                    <includes>
+                        <include>**/*IntegrationTest.java</include>
+                        <include>**/*IntegrationTests.java</include>
+                    </includes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>integration-test</id>
+                        <goals>
+                            <goal>integration-test</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <optimize>${compile.plugin.optimize}</optimize>
+                    <debug>${compile.plugin.debug}</debug>
+                </configuration>
+            </plugin>
+        </plugins>
+
+    </build>
+
+</project>

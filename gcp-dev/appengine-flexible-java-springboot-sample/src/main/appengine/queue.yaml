@@ -1,0 +1,6 @@
+queue:
+- name: kefeng-queue
+  target: flex-java-demo
+  max_concurrent_requests: 1
+  rate: 1/m
+

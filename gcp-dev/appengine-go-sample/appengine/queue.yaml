@@ -1,0 +1,8 @@
+queue:
+- name: queue-blue
+  # target: task-module
+  rate: 1/m
+
+- name: queue-red
+  rate: 1/m
+

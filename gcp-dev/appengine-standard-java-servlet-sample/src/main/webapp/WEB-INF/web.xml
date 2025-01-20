@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- [START_EXCLUDE] -->
+<!--
+  ~ Copyright (c) 2016 Google Inc.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License"); you
+  ~ may not use this file except in compliance with the License. You may
+  ~ obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+  ~ implied. See the License for the specific language governing
+  ~ permissions and limitations under the License.
+
+ --><!-- [END_EXCLUDE] -->
+
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" id="webapp-java-jsp-demo" version="3.0">
+
+    <servlet>
+        <servlet-name>healthServlet</servlet-name>
+        <servlet-class>nz.net.osnz.servlet.HealthCheckServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>healthServlet</servlet-name>
+        <url-pattern>/_ah/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>bigQueryServlet</servlet-name>
+        <servlet-class>nz.net.osnz.servlet.BigQueryServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>bigQueryServlet</servlet-name>
+        <url-pattern>/bigquery/*</url-pattern>
+    </servlet-mapping>
+
+
+    <servlet>
+        <servlet-name>helloServlet</servlet-name>
+        <servlet-class>nz.net.osnz.servlet.HelloServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>helloServlet</servlet-name>
+        <url-pattern>/*</url-pattern>
+    </servlet-mapping>
+
+
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>admin</web-resource-name>
+            <url-pattern>/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>admin</role-name>
+        </auth-constraint>
+    </security-constraint>
+
+</web-app>

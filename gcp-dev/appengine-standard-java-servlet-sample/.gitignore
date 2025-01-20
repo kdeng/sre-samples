@@ -1,0 +1,61 @@
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+
+# complie class
+*.class
+target
+*/target/
+node
+node_modules
+bower_dependencies
+
+# System files
+.DS_Store
+
+# IDE profiles
+.idea/
+*/.idea/
+*.iml
+*/*.iml
+.classpath
+.project
+.settings
+.vscode
+codeship.aes
+
+# release
+release.properties
+
+# Log
+*.log
+log/
+
+# SQL
+**/*.sql
+
+# Gradle related
+.gradle
+*/build/
+
+# Ignore Gradle GUI config
+gradle-app.setting
+
+# Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
+!gradle-wrapper.jar
+
+# Cache of project
+.gradletasknamecache
+
+# # Work around https://youtrack.jetbrains.com/issue/IDEA-116898
+# gradle/wrapper/gradle-wrapper.properties
+
+# Docker and Vagrant related
+*/.vagrant/
+
+# Security related
+credentials.yml

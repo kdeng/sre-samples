@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cronentries>
+    <!--<cron>-->
+        <!--<url>/_ah/health</url>-->
+        <!--<description>Repopulate the cache every 2 minutes</description>-->
+        <!--<schedule>every 2 minutes</schedule>-->
+        <!--<timezone>Pacific/Auckland</timezone>-->
+        <!--<target>kdeng-java-servlet-demo</target>-->
+    <!--</cron>-->
+    <!--<cron>-->
+        <!--<url>/hello</url>-->
+        <!--<description>Mail out a weekly report</description>-->
+        <!--<schedule>every 5 minutes</schedule>-->
+        <!--<timezone>Pacific/Auckland</timezone>-->
+        <!--<target>kdeng-java-servlet-demo</target>-->
+    <!--</cron>-->
+</cronentries>

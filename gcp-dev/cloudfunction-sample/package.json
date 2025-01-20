@@ -1,0 +1,25 @@
+{
+  "name": "kdeng-cloudfunction-demo",
+  "version": "1.0.0",
+  "description": "kdeng cloudfunction demo - check bigquery job status ",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --inline-diffs src/test/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:kdeng/google-cloud-samples.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "homepage": "https://github.com/kdeng/google-cloud-samples/cloudfunction-sample#readme.md",
+  "dependencies": {
+    "babel-polyfill": "^6.26.0",
+    "googleapis": "^29.0.0",
+    "mathjs": "^4.2.2",
+    "moment": "^2.22.1",
+    "request": "^2.85.0",
+    "wait-until": "0.0.2"
+  },
+  "devDependencies": {}
+}

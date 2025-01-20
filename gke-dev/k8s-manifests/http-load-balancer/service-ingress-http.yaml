@@ -1,0 +1,54 @@
+apiVersion: v1
+kind: List
+items:
+- apiVersion: cloud.google.com/v1
+  kind: BackendConfig
+  metadata:
+    name: api-demo-v3-backend
+  spec:
+    iap:
+      enabled: false
+      oauthclientCredentials:
+        secretName: my-secret
+    healthCheck:
+      checkIntervalSec: 30
+      port: 8080
+      requestPath: /manifest.json
+      timeoutSec: 25
+      type: HTTP
+    timeoutSec: 25
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      cloud.google.com/app-protocols: '{"my-http":"HTTP"}'
+      cloud.google.com/backend-config: '{"default":"api-demo-v3-backend"}'
+      cloud.google.com/neg: '{"ingress":true}'
+    name: api-demo-v3-service
+  spec:
+    ports:
+    - name: my-http
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      app: api-demo-service-v3
+    sessionAffinity: None
+    type: ClusterIP
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    annotations:
+      kubernetes.io/ingress.class: gce
+    name: api-demo-v3-ingress
+  spec:
+    rules:
+    - http:
+        paths:
+        - backend:
+            service:
+              name: api-demo-v3-service
+              port:
+                name: my-http
+          path: /*
+          pathType: ImplementationSpecific

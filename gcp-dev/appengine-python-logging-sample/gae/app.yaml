@@ -1,0 +1,9 @@
+runtime: python39
+
+instance_class: F1
+
+service: default
+
+handlers:
+- url: /
+  script: main.app

@@ -1,0 +1,7 @@
+queue:
+
+- name: kdeng-bigquery-job-queue
+  target: kdeng-gae-bigquery-service
+  max_concurrent_requests: 1
+  rate: 1/m
+

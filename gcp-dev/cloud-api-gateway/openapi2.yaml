@@ -1,0 +1,68 @@
+# openapi2-functions.yaml
+swagger: '2.0'
+info:
+  title: api-gateway-demo
+  description: Sample API on API Gateway with a Google Cloud Functions backend
+  version: 1.0.1
+schemes:
+  - https
+produces:
+  - application/json
+paths:
+  /v2:
+    get:
+      summary: api V2
+      operationId: api-v2
+      x-google-backend:
+        address: https://api-demo-x2avudvmgq-uc.a.run.app
+      responses:
+        '200':
+          description: A successful response
+          schema:
+            type: object
+  /v4:
+    get:
+      summary: api V4
+      operationId: api-v4
+      x-google-backend:
+        address: https://api-demo-v4-x2avudvmgq-uc.a.run.app
+      responses:
+        '200':
+          description: A successful response
+          schema:
+            type: object
+
+  # /v2:
+  #   get:
+  #     summary: api v2
+  #     operationId: v2
+  #     x-google-backend:
+  #       address: https://api-demo-2-x2avudvmgq-uc.a.run.app
+  #     responses:
+  #       '200':
+  #         description: A successful response
+  #         schema:
+  #           type: object
+
+  # /v3:
+  #   get:
+  #     summary: api v3
+  #     operationId: v3
+  #     x-google-backend:
+  #       address: https://api-demo-x2avudvmgq-uc.a.run.app
+  #     responses:
+  #       '200':
+  #         description: A successful response
+  #         schema:
+  #           type: object
+  # /hello:
+  #   get:
+  #     summary: cloud function
+  #     operationId: cf-hello
+  #     x-google-backend:
+  #       address: https://us-central1-kefeng-playground.cloudfunctions.net/function-1
+  #     responses:
+  #       '200':
+  #         description: A successful response
+  #         schema:
+  #           type: object

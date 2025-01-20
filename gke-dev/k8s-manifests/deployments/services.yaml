@@ -1,0 +1,144 @@
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   labels:
+#     app: api-demo-v2
+#   name: api-demo-service
+#   annotations:
+#     networking.gke.io/load-balancer-type: "Internal"
+# spec:
+#   ports:
+#   - port: 8080
+#     protocol: TCP
+#     targetPort: 8080
+#   selector:
+#     app: api-demo-service-v2
+#   type: LoadBalancer
+---
+apiVersion: v1
+kind: List
+items:
+# - apiVersion: v1
+#   kind: Service
+#   metadata:
+#     labels:
+#       app: api-demo-v1
+#     name: api-demo-v1-service
+#     annotations:
+#       cloud.google.com/neg: '{"ingress":true}'
+#       networking.gke.io/load-balancer-type: "Internal"
+#       networking.gke.io/internal-load-balancer-allow-global-access: "true"
+#   spec:
+#     ports:
+#     - port: 8080
+#       protocol: TCP
+#       targetPort: 8080
+#     selector:
+#       app: api-demo-service-v1
+#     type: LoadBalancer
+# - apiVersion: v1
+#   kind: Service
+#   metadata:
+#     annotations:
+#       cloud.google.com/neg: '{"ingress":true}'
+#       cloud.google.com/app-protocols: '{"my-https":"HTTP"}'
+#       cloud.google.com/backend-config: '{"default":"api-demo-v1-backend"}'
+#     name: api-demo-v1-service
+#   spec:
+#     ipFamilies:
+#     - IPv4
+#     ipFamilyPolicy: SingleStack
+#     ports:
+#     - name: my-https
+#       port: 8080
+#       protocol: TCP
+#       targetPort: 8080
+#     selector:
+#       app: api-demo-service-v1
+#     sessionAffinity: None
+#     type: ClusterIP
+# - apiVersion: v1
+#   kind: Service
+#   metadata:
+#     annotations:
+#       cloud.google.com/neg: '{"ingress":true}'
+#       cloud.google.com/app-protocols: '{"my-https":"HTTP"}'
+#       cloud.google.com/backend-config: '{"default":"api-demo-v2-backend"}'
+#     name: api-demo-v2-service
+#   spec:
+#     ipFamilies:
+#     - IPv4
+#     ipFamilyPolicy: SingleStack
+#     ports:
+#     - name: my-https
+#       port: 8080
+#       protocol: TCP
+#       targetPort: 8080
+#     selector:
+#       app: api-demo-service-v2
+#     sessionAffinity: None
+#     type: ClusterIP
+- apiVersion: v1
+  kind: Service
+  metadata:
+    # annotations:
+    #   cloud.google.com/neg: '{"ingress":true}'
+    #   cloud.google.com/app-protocols: '{"my-https":"HTTP"}'
+    #   cloud.google.com/backend-config: '{"default":"api-demo-v3-backend"}'
+    name: api-demo-v1-service
+  spec:
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: my-https
+      port: 8081
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      app: api-demo-service-v1
+    sessionAffinity: None
+    type: NodePort
+- apiVersion: v1
+  kind: Service
+  metadata:
+    # annotations:
+    #   cloud.google.com/neg: '{"ingress":true}'
+    #   cloud.google.com/app-protocols: '{"my-https":"HTTP"}'
+    #   cloud.google.com/backend-config: '{"default":"api-demo-v3-backend"}'
+    name: api-demo-v2-service
+  spec:
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: my-https
+      port: 8082
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      app: api-demo-service-v2
+    sessionAffinity: None
+    type: NodePort
+- apiVersion: v1
+  kind: Service
+  metadata:
+    # annotations:
+    #   cloud.google.com/neg: '{"ingress":true}'
+    #   cloud.google.com/app-protocols: '{"my-https":"HTTP"}'
+    #   cloud.google.com/backend-config: '{"default":"api-demo-v3-backend"}'
+    name: api-demo-v3-service
+  spec:
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: my-https
+      port: 8083
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      app: api-demo-service-v3
+    sessionAffinity: None
+    type: NodePort

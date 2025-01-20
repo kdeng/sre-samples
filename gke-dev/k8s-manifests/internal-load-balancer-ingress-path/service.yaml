@@ -1,0 +1,40 @@
+---
+apiVersion: v1
+kind: List
+items:
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      cloud.google.com/app-protocols: '{"my-http":"HTTP"}'
+      cloud.google.com/backend-config: '{"default":"api-demo-v3-backend"}'
+      cloud.google.com/neg: '{"ingress":true}'
+    name: api-demo-v3-service
+  spec:
+    ports:
+    - name: my-http
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      app: api-demo-service-v3
+    sessionAffinity: None
+    type: ClusterIP
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      cloud.google.com/app-protocols: '{"my-http":"HTTP"}'
+      cloud.google.com/backend-config: '{"default":"api-demo-v2-backend"}'
+      cloud.google.com/neg: '{"ingress":true}'
+    name: api-demo-v2-service
+  spec:
+    ports:
+    - name: my-http
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      app: api-demo-service-v2
+    sessionAffinity: None
+    type: ClusterIP

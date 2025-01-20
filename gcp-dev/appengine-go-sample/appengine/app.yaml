@@ -1,0 +1,15 @@
+service: push-task-queue-demo
+runtime: go
+api_version: go1
+
+manual_scaling:
+  instances: 1
+
+env_variables:
+  SERVICE_NAME: "push-task-queue-demo"
+  GOOGLE_APPLICATION_CREDENTIALS: "service_account_key.json"
+
+handlers:
+- url: /.*
+  script: _go_app
+  login: admin

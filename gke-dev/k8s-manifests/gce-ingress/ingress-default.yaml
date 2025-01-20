@@ -1,0 +1,52 @@
+apiVersion: v1
+kind: List
+items:
+- apiVersion: cloud.google.com/v1
+  kind: BackendConfig
+  metadata:
+    name: api-demo-v2-backend-test
+  spec:
+    securityPolicy:
+      name: gce-policy
+    timeoutSec: 5  # A timeout of seconds
+    healthCheck:
+      checkIntervalSec: 30
+      port: 8080
+      requestPath: /v2/test-manifest.json
+      timeoutSec: 25
+      healthyThreshold: 3
+      unhealthyThreshold: 5
+      type: HTTP
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      cloud.google.com/app-protocols: '{"my-http":"HTTP"}'
+      cloud.google.com/backend-config: '{"default":"api-demo-v2-backend-test"}'
+      cloud.google.com/neg: '{"ingress":true}'
+    name: api-demo-v2-service-test
+  spec:
+    type: ExternalName
+    externalName: api-demo-v2-service.test.svc.cluster.local
+    ports:
+    - name: my-http
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    name: gce-ingress-demo
+    annotations:
+      kubernetes.io/ingress.class: "gce"
+  spec:
+    rules:
+    - http:
+        paths:
+        - backend:
+            service:
+              name: api-demo-v2-service-test
+              port:
+                name: my-http
+          path: /v2/*
+          pathType: ImplementationSpecific
